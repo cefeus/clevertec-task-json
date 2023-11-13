@@ -15,7 +15,7 @@ public class FieldProcessor {
 
     private static final Serializer serializer = new Serializer();
 
-    public static String consume(String name, Class<?> type, Object value) {
+    public static String consume(String name,  Object value) {
         if (value instanceof Collection<?>) {
             return asCollection(name, value);
         } else if (value instanceof Map<?, ?>) {
@@ -30,7 +30,7 @@ public class FieldProcessor {
             case "String", "UUID" -> {
                 return asString(name, value);
             }
-            case "LocalTime", "LocalDate", "LocalDateTime", "OffsetTime", "OffsetDateTime", "ZonedDateTime" -> {
+            case "LocalDate", "LocalDateTime", "OffsetDateTime", "ZonedDateTime" -> {
                 return asDate(name, value);
             }
             default -> {
@@ -54,7 +54,7 @@ public class FieldProcessor {
     private static String asCollection(String name, Object value) {
         Collection<?> values = (Collection<?>) value;
         String serializedCollection = values.stream()
-                .map(val -> consume(null, val.getClass(), val))
+                .map(val -> consume(null,  val))
                 .collect(Collectors.joining(COMMA));
         return QUOTATION_MARK + name + QUOTATION_MARK + COLON + LEFT_FIGURE_BRACKET+ serializedCollection + RIGHT_FIGURE_BRACKET;
     }
@@ -62,7 +62,7 @@ public class FieldProcessor {
     private static String asMap(String name, Object value) {
         Map<?, ?> values = (Map<?, ?>) value;
         String serializedMap = values.entrySet().stream()
-                .map(val -> consume(val.getKey().toString(), value.getClass(), val.getValue()))
+                .map(val -> consume(val.getKey().toString(),  val.getValue()))
                 .collect(Collectors.joining(COMMA));
         return QUOTATION_MARK + name + QUOTATION_MARK + COLON + LEFT_FIGURE_BRACKET + serializedMap + RIGHT_FIGURE_BRACKET;
     }

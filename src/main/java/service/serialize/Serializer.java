@@ -18,10 +18,9 @@ public class Serializer {
     private  String serializeField(Field field, Object o ) {
         try {
         String fieldName = field.getName();
-        Class<?> fieldType = field.getType();
         field.setAccessible(true);
         Object fieldValue = field.get(o);
-        return FieldProcessor.consume(fieldName, fieldType, fieldValue);
+        return FieldProcessor.consume(fieldName, fieldValue);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
