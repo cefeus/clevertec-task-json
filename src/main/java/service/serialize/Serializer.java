@@ -8,7 +8,7 @@ import static util.constants.StringLiterals.*;
 
 public class Serializer {
 
-    public  String serialize(Object object) {
+    public String serialize(Object object) {
         Class<?> clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         String serialized = Arrays.stream(fields).map(field -> serializeField(field, object)).collect(Collectors.joining(COMMA));
