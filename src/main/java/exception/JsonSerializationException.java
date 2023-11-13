@@ -6,7 +6,4 @@ public class JsonSerializationException extends RuntimeException{
         super(message, cause);
     }
 
-    public JsonSerializationException(String message) {
-        super(message);
-    }
 }
