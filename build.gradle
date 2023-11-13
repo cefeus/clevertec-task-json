@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "6.5.1"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:2.16.0-rc1"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0-rc1"
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.github.drapostolos:type-parser:0.8.1'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation "org.mockito:mockito-junit-jupiter:5.6.0"
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.projectlombok:lombok:1.18.28'
+}
+
+test {
+    useJUnitPlatform()
+}
