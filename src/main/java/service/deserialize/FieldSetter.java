@@ -1,6 +1,7 @@
 package service.deserialize;
 
 import com.github.drapostolos.typeparser.TypeParser;
+import exception.JsonDeserializationException;
 import org.apache.commons.lang3.StringUtils;
 import util.DateAndTimeFormatter;
 import util.ObjectTypizationUtil;
@@ -52,7 +53,7 @@ public class FieldSetter {
         }
         return root;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new JsonDeserializationException("Deserialization exception while deserializing " + clazz + ". " + e);
         }
     }
 
@@ -107,7 +108,7 @@ public class FieldSetter {
             collection = getCollection(type);
             Class<T> collectionType = (Class<T>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
             List<Object> reserve = getValueFromMap(parsedMap, fieldName);
-            //Map<String, Object> processed = Map.of(fieldName, reserve);
+
             if(List.class.isAssignableFrom(collectionType) || Map.class.isAssignableFrom(collectionType))
               reserve = reserve.stream().map(el -> parseField(parsedMap, fieldName, collectionType, collectionType)).collect(Collectors.toList());
             if(isPrimitiveOrWrapper(type) || type.equals(String.class)) {
@@ -124,7 +125,7 @@ public class FieldSetter {
 
             return (T) collection;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new JsonDeserializationException("Cannot instantiate or deserialize collection. " + e);
         }
     }
     private static <T> T parseAsMap(Map<String, Object> parsedMap, String fieldName, Type genericType, Class<?> type)  {
@@ -144,7 +145,7 @@ public class FieldSetter {
         }
         return (T) map;
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new JsonDeserializationException("Cannot instantiate or deserialize map. " + e);
         }
     }
 
